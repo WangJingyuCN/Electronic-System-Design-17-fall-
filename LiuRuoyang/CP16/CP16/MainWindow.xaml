@@ -1,0 +1,27 @@
+﻿<Window x:Class="CP16.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CP16"
+        mc:Ignorable="d"
+        Title="CP16" Height="474.314" Width="699.957" Closed="Window_Closed">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="330*"/>
+            <RowDefinition Height="72*"/>
+            <RowDefinition Height="43*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="46*"/>
+            <ColumnDefinition Width="17*"/>
+        </Grid.ColumnDefinitions>
+        <Button Content="发送" HorizontalAlignment="Right" Margin="0,8.742,18.085,10" Grid.Row="2" Width="75" Click="Button_Click" d:LayoutOverrides="LeftMargin, RightMargin, TopMargin, BottomMargin" IsDefault="True"/>
+        <TextBox x:Name="InputTextBox" Margin="10" Grid.Row="1" TextWrapping="Wrap" Text="在此输入文本" d:LayoutOverrides="LeftMargin, RightMargin, TopMargin, BottomMargin"/>
+        <ScrollViewer x:Name="TextScrollViewer" Margin="10" d:LayoutOverrides="LeftMargin, RightMargin, TopMargin, BottomMargin">
+            <ListBox x:Name="TextListBox"/>
+        </ScrollViewer>
+        <CheckBox x:Name="repeatCheckBox" Content="重复发送" HorizontalAlignment="Left" Margin="27,13.4,0,0" Grid.Row="2" VerticalAlignment="Top" RenderTransformOrigin="-0.001,0.823" Unchecked="repeatCheckBox_Unchecked" Checked="repeatCheckBox_Checked"/>
+
+    </Grid>
+</Window>
