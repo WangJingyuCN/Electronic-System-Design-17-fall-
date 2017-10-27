@@ -4,8 +4,11 @@
 #include"sound_wave.h"
 
 std::vector<float> cp16(std::string inputString) {
+	int len1 = inputString.length();
 	std::string convertedString = dbs_to_qbs(inputString);
+	std::cout << (int)(unsigned char)convertedString[0] << std::endl;
 	int len = convertedString.length();
+	std::cout << len << std::endl;
 	len = len/2;
 	std::ifstream fin;
 	fin.open("hzk16s",std::ios::binary|std::ios::in);
@@ -26,7 +29,7 @@ std::vector<float> cp16(std::string inputString) {
 	std::vector<float> CSOUND = getSoundWave(CMatrix, len);
 	return CSOUND;
 }
-/*
+
 int main()
 {
 //	std::ifstream fin;
@@ -37,37 +40,41 @@ int main()
 //	fin.read((char*)a, 32);
 //	std::cout << (int)a[7] << std::endl;
 
-	std::string test = "a";
-	std::cout << (int)(unsigned char)test[0] << std::endl;
+//	std::string test = "a";
+//	std::cout << (int)(unsigned char)test[0] << std::endl;
 
-	std::string a = "\xb5\xe7\xd7\xd3";
+	std::string a = "\xb5\xe7\xd7\xd3!";
 	std::vector<float> result = cp16(a);
 	std::ofstream fout("test.txt");
 	for(int i = 0; i<result.size(); i++)
 		fout << result[i] << std::endl;
 	return 0;
 }
-*/
+
 std::string dbs_to_qbs(std::string inputString)
 {
 	std::string convertedString;
 	for(int i = 0; i < inputString.length(); i++) {
+		std::cout << (int)(unsigned char)inputString[i] << std::endl;
 		if((int)(unsigned char)inputString[i] < 128 && (int)(unsigned char)inputString[i] > 32) {
 			convertedString += "\xa3";
 			convertedString += inputString[i];
 			
 		}
 		else if((int)(unsigned char)inputString[i] >= 163) {
-			convertedString += inputString[i] + inputString[i+1];
+			convertedString += inputString[i];
+			convertedString += inputString[i+1];
 			i++;
 		}
 		else if((int)(unsigned char)inputString[i] == 32) {
 			convertedString += "\xa1\xa1";
 		}
 		else {
-			convertedString += inputString[i] + inputString[i+1];
+			convertedString += inputString[i];
+			convertedString += inputString[i+1];
 			i++;
 		}
+		std::cout << convertedString.length() << std::endl;
 	}
 	return convertedString;
 }
