@@ -38,8 +38,10 @@ namespace CP16
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
+            string text2send = $"{Txt1.Text}-DE-{Txt2.Text}-{InputTextBox.Text}";
+
             var stackPanel = new StackPanel {Orientation = Orientation.Horizontal};
-            stackPanel.Children.Add(new Label {Content = InputTextBox.Text});
+            stackPanel.Children.Add(new Label {Content = text2send});
             stackPanel.Children.Add(new Label {Content = "发送中...", Foreground = Brushes.Red});
             TextListBox.Items.Add(stackPanel);
 
@@ -48,8 +50,8 @@ namespace CP16
                 TextListBox.ScrollIntoView(TextListBox.Items[TextListBox.Items.Count - 1]);
             }
 
-            var sound = CP16Library1.CP16Library1.getSound(InputTextBox.Text);
-            tasks.Add(PlaySound(sound));
+            var sound = CP16Library1.CP16Library1.getSound(text2send);
+            tasks.Add(PlaySound(sound,65535));
             stackPanels.Add(stackPanel);
 
             if (backThread == null)
@@ -59,6 +61,7 @@ namespace CP16
             }
 
             lastSendedStr = InputTextBox.Text;
+            repeatCheckBox.Content = $"重复发送:\"{lastSendedStr}\"";
             InputTextBox.Text = "";
         }
 
@@ -92,8 +95,8 @@ namespace CP16
             }
         }
 
-        private static Task PlaySound(float[] sound, UInt16 volume = 16383)
-        {
+        private Task PlaySound(float[] sound, UInt16 volume = 16383)
+        {          
             return Task.Run(() => {
                 var mStrm = new MemoryStream();
                 BinaryWriter writer = new BinaryWriter(mStrm);
@@ -107,7 +110,7 @@ namespace CP16
                 short frameSize = (short)(tracks * ((bitsPerSample + 7) / 8));
                 int bytesPerSecond = samplesPerSecond * frameSize;
                 int waveSize = 4;
-                int samples = (int)((decimal)samplesPerSecond * sound.Length / samplesPerSecond);
+                int samples = sound.Length;
                 int dataChunkSize = samples * frameSize;
                 int fileSize = waveSize + headerSize + formatChunkSize + headerSize + dataChunkSize;
                 // var encoding = new System.Text.UTF8Encoding();
@@ -134,6 +137,8 @@ namespace CP16
 
                 mStrm.Seek(0, SeekOrigin.Begin);
                 new System.Media.SoundPlayer(mStrm).PlaySync();
+                //new System.Media.SoundPlayer("I:\\three.wav").Play();
+                //Thread.Sleep(sound.Length/8 + 1000);
                 writer.Close();
                 mStrm.Close();
             });
