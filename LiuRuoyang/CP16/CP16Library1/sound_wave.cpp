@@ -37,23 +37,25 @@ cliext::vector<float> getSoundWave(int* dotarray, int letter_num)
 	cliext::vector<float> wave_out;
 	wave_out.reserve(frames * letter_num * dot_height);
 	double max = 0;
-	for (int i = letter_num * dot_width * dot_height - dot_width; i >=0 ; i -= dot_width)
+	for (int begin = 0; begin < letter_num*dot_width*dot_height; begin += dot_width*dot_height)
 	{
-		for (int j = 0; j < frames; ++j)
+		for (int i = begin + dot_width*dot_height-dot_width; i >=begin ; i -= dot_width)
 		{
-			float sum = 0;
-			for (int k = 0; k < dot_width; ++k)
+			for (int j = 0; j < frames; ++j)
 			{
-				sum += dotarray[i + k] * wave_hamming[k][j];
+				float sum = 0;
+				for (int k = 0; k < dot_width; ++k)
+				{
+					sum += dotarray[i + k] * wave_hamming[k][j];
+				}
+				if (max < sum)
+				{
+					max = sum;
+				}
+				wave_out.push_back(sum);
 			}
-			if (max < sum)
-			{
-				max = sum;
-			}
-			wave_out.push_back(sum);
 		}
 	}
-
 	for (int i = 0; i < wave_out.size(); ++i)
 	{
 		wave_out[i] = wave_out[i] / max;

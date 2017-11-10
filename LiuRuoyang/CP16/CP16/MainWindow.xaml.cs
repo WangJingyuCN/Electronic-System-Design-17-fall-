@@ -36,13 +36,13 @@ namespace CP16
         private bool isRunning = true;
         private bool isRepeat = false;
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void sendTxt(string txt)
         {
-            string text2send = $"{Txt1.Text}-DE-{Txt2.Text}-{InputTextBox.Text}";
+            string text2send = $"{Txt1.Text}-DE-{Txt2.Text}-{txt}";
 
-            var stackPanel = new StackPanel {Orientation = Orientation.Horizontal};
-            stackPanel.Children.Add(new Label {Content = text2send});
-            stackPanel.Children.Add(new Label {Content = "发送中...", Foreground = Brushes.Red});
+            var stackPanel = new StackPanel { Orientation = Orientation.Horizontal };
+            stackPanel.Children.Add(new Label { Content = text2send });
+            stackPanel.Children.Add(new Label { Content = "发送中...", Foreground = Brushes.Red });
             TextListBox.Items.Add(stackPanel);
 
             if (!TextListBox.Items.IsEmpty)
@@ -51,7 +51,7 @@ namespace CP16
             }
 
             var sound = CP16Library1.CP16Library1.getSound(text2send);
-            tasks.Add(PlaySound(sound,65535));
+            tasks.Add(PlaySound(sound, 65535));
             stackPanels.Add(stackPanel);
 
             if (backThread == null)
@@ -60,9 +60,28 @@ namespace CP16
                 backThread.Start();
             }
 
-            lastSendedStr = InputTextBox.Text;
-            repeatCheckBox.Content = $"重复发送:\"{lastSendedStr}\"";
+            lastSendedStr = txt;
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            sendTxt(InputTextBox.Text);
+            isRepeat = false;
             InputTextBox.Text = "";
+            BtnStop.IsEnabled = false;
+        }
+        private void BtnRepeat_Click(object sender, RoutedEventArgs e)
+        {
+            sendTxt(InputTextBox.Text);
+            isRepeat = true;
+            InputTextBox.Text = "";
+            BtnStop.IsEnabled = true;
+        }
+
+        private void BtnStop_Click(object sender, RoutedEventArgs e)
+        {
+            isRepeat = false;
+            BtnStop.IsEnabled = false;
         }
 
         private void backFunc()
@@ -86,8 +105,7 @@ namespace CP16
                     {
                         Dispatcher.Invoke(delegate
                         {
-                            InputTextBox.Text = lastSendedStr;
-                            Button_Click(null, null);
+                            sendTxt(lastSendedStr);
                         });
                     }
                     Thread.Sleep(100);
@@ -147,16 +165,6 @@ namespace CP16
         private void Window_Closed(object sender, EventArgs e)
         {
             isRunning = false;
-        }
-
-        private void repeatCheckBox_Unchecked(object sender, RoutedEventArgs e)
-        {
-            isRepeat = false;
-        }
-
-        private void repeatCheckBox_Checked(object sender, RoutedEventArgs e)
-        {
-            isRepeat = true;
         }
     }
 }
