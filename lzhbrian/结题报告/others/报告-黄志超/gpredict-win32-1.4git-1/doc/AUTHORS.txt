@@ -1,0 +1,26 @@
+Gpredict is designed and developed by Alexandru Csete OZ9AEC, with significant
+contributions from all over the world.
+
+Contributors:
+- William J Beksi, KC2EXL, Map view.
+- Charles Suprin, AA1VS, GPS support and many other improvements.
+- Alan Moffet KE7IJZ and Valentin Yakovenkov, Windows build.
+- David VK5DG, transponder data files
+- Dr. T.S. Kelso, the author original SGP4/SDP4 algorithms in FORTRAN and Pascal. 
+- Neoklis Kyriazis, 5B4AZ, conversion of the algorithms to C.
+- Damon Chaplin is the author of GooCanvas, which is used extensively in gpredict
+  see http://www.dachaplin.dsl.pipex.com/goocanvas/
+- Maidenhead locator functions are based on work done by Stephane Fillod,
+  Nate Bargmann, Dave Hines, Mirko Caserta, and S. R. Sampson.
+- Win32 networking in rig and rotor control fixed by Stephane Fillod,
+- Paul Schulz, VK5FPAW (various patches).
+- Martin Pool, for his natural string compare routines
+  see http://sourcefrog.net/projects/natsort/
+- Patrick Strasser, OE6PSE (natural sorting)
+
+
+Imagery:
+Most of the maps originate from NASA Visible Earth, http://visibleearth.nasa.gov/
+
+If you notice that your work has been used in in one way or other without giving
+you the proper credits, contact Alexandru Csete at csete at users.sourceforge.net
